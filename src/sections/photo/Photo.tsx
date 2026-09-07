@@ -1,4 +1,5 @@
 import type { Photo as PhotoContent } from '../../content/photos'
+import { Sprig } from '../../shared/ui/Botanical'
 import { useGsapContext } from '../../shared/hooks/useGsapContext'
 import { usePrefersReducedMotion } from '../../shared/hooks/usePrefersReducedMotion'
 import { gsap } from '../../shared/lib/gsap'
@@ -8,9 +9,11 @@ type PhotoProps = {
   readonly photo: PhotoContent
   /** Set on the photograph nearest the fold so it is not lazy-loaded. */
   readonly priority?: boolean
+  /** Lays a branch on the mat. Reserved for the first and last frames. */
+  readonly ornament?: boolean
 }
 
-export function Photo({ photo, priority = false }: PhotoProps) {
+export function Photo({ photo, priority = false, ornament = false }: PhotoProps) {
   const reduced = usePrefersReducedMotion()
 
   const scope = useGsapContext<HTMLDivElement>(
@@ -41,22 +44,26 @@ export function Photo({ photo, priority = false }: PhotoProps) {
 
   return (
     <figure className={styles.figure}>
-      <div ref={scope} className={styles.frame} style={{ aspectRatio: `${width} / ${height}` }}>
-        <picture>
-          <source type="image/avif" srcSet={set('avif')} />
-          <source type="image/webp" srcSet={set('webp')} />
-          <img
-            className={styles.image}
-            src={url('jpg', 500)}
-            srcSet={set('jpg')}
-            width={width}
-            height={height}
-            alt={alt}
-            loading={priority ? 'eager' : 'lazy'}
-            fetchPriority={priority ? 'high' : 'auto'}
-            decoding="async"
-          />
-        </picture>
+      <div className={`${styles.mat} ${ornament ? styles.ornamented : ''}`}>
+        <div ref={scope} className={styles.frame} style={{ aspectRatio: `${width} / ${height}` }}>
+          <picture>
+            <source type="image/avif" srcSet={set('avif')} />
+            <source type="image/webp" srcSet={set('webp')} />
+            <img
+              className={styles.image}
+              src={url('jpg', 500)}
+              srcSet={set('jpg')}
+              width={width}
+              height={height}
+              alt={alt}
+              loading={priority ? 'eager' : 'lazy'}
+              fetchPriority={priority ? 'high' : 'auto'}
+              decoding="async"
+            />
+          </picture>
+        </div>
+
+        {ornament && <Sprig />}
       </div>
     </figure>
   )

@@ -4,10 +4,29 @@
   padding-inline: var(--sp-4);
 }
 
-.frame {
+/**
+ * A paper mat behind every photograph.
+ *
+ * It is what makes ink ornament possible at all: line art drawn straight onto
+ * a photograph disappears into whatever the photograph happens to be doing at
+ * that corner. On the mat it always has the same ground to sit on.
+ */
+.mat {
   position: relative;
   max-width: var(--content-max);
   margin-inline: auto;
+  padding: var(--sp-3);
+  background: var(--bg-card);
+  box-shadow: 0 14px 34px -18px rgb(30 16 38 / 0.32);
+}
+
+/* Extra room below the frame for the branch. */
+.ornamented {
+  padding-block-end: var(--sp-4);
+}
+
+.frame {
+  position: relative;
   overflow: hidden;
   /* Holds the photograph's colour while it loads, so the band never flashes
      as a white gap on a slow connection. */
@@ -27,3 +46,4 @@
   height: 118%;
   object-fit: cover;
 }
+

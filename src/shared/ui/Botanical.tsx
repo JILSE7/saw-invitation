@@ -58,6 +58,39 @@ export function Divider() {
 }
 
 /**
+ * A single horizontal branch, for laying on the paper beside a photograph.
+ *
+ * Corner vines were tried here first and do not work: the mat is only as deep
+ * as its padding, so any vine large enough to read spills onto the image and
+ * dissolves into whatever the photograph is doing at that corner. A branch
+ * lying along the mat always has the same ground under it.
+ *
+ * Leaf bases are sampled off the stem curve at t = 0.2, 0.4, 0.6 and 0.8, and
+ * alternate above and below it.
+ */
+export function Sprig() {
+  return (
+    <svg
+      className={`${styles.sprig} ${styles.stroke}`}
+      viewBox="0 0 128 40"
+      role="presentation"
+      aria-hidden="true"
+    >
+      <path d="M8 24 C34 16 76 16 112 22" />
+      <Leaves
+        items={[
+          { x: 25, y: 20, angle: -30, scale: 1.7 },
+          { x: 45, y: 18, angle: 210, scale: 1.6 },
+          { x: 67, y: 18, angle: -30, scale: 1.7 },
+          { x: 90, y: 19, angle: 210, scale: 1.6 },
+          { x: 112, y: 22, angle: -62, scale: 1.4 },
+        ]}
+      />
+    </svg>
+  )
+}
+
+/**
  * A quarter-circle vine for a card corner.
  *
  * The stem is a Bézier quarter-arc of radius 76 centred on (100, 100), and

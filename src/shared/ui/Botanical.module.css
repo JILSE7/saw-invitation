@@ -5,9 +5,16 @@
   color: var(--c-lavender);
 }
 
+.sprig {
+  display: block;
+  width: 136px;
+  margin: var(--sp-3) auto 0;
+  color: color-mix(in srgb, var(--c-lavender) 72%, var(--c-plum));
+}
+
 .corner {
   position: absolute;
-  width: clamp(56px, 16vw, 84px);
+  width: var(--vine-size, clamp(56px, 16vw, 84px));
   color: color-mix(in srgb, var(--c-lavender) 78%, var(--c-plum));
   pointer-events: none;
 }

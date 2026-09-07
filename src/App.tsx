@@ -28,7 +28,7 @@ export default function App() {
   return (
     <main>
       <Hero family={family} />
-      <Photo photo={photos.ring} priority />
+      <Photo photo={photos.ring} priority ornament />
       <Countdown />
       <Venues />
       <Photo photo={photos.water} />
@@ -40,7 +40,7 @@ export default function App() {
       <Photo photo={photos.walking} />
       <Statement body={passes.body} variant="tinted" />
       <Rsvp family={family} />
-      <Photo photo={photos.dock} />
+      <Photo photo={photos.dock} ornament />
       <Statement body={closing.body} variant="tinted" />
       <MusicPlayer />
     </main>
