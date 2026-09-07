@@ -19,11 +19,10 @@
   margin-block: var(--sp-6);
 }
 
-/* Placeholder until the dress and tuxedo line art is traced to SVG. */
 .figure {
-  width: 84px;
-  aspect-ratio: 2 / 3;
-  border: 1px dashed var(--rule);
+  width: 96px;
+  aspect-ratio: 1;
+  color: var(--c-plum);
 }
 
 .note {

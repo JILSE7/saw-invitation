@@ -65,10 +65,9 @@
   color: var(--text-muted);
 }
 
-/* Placeholder box until the traced SVGs land in src/assets/art/icons. */
 .icon {
-  width: 64px;
+  width: 66px;
   aspect-ratio: 1;
-  border: 1px dashed var(--rule);
-  border-radius: 50%;
+  /* The glyphs stroke themselves with currentColor. */
+  color: var(--c-plum);
 }
