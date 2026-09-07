@@ -46,9 +46,11 @@ export const venues: readonly Venue[] = [
     kind: 'ceremony',
     title: 'Ceremonia Religiosa',
     time: '1:30 pm',
-    place: 'Parroquia de la Sagrada Familia', // TODO(transcribe)
-    address: '', // TODO(transcribe)
-    mapUrl: '', // TODO(provide)
+    place: 'Parroquia de La Sagrada Familia',
+    // TODO(transcribe): the short link resolves to a name and coordinates
+    // (19.541583, -99.1754863) but carries no street address.
+    address: '',
+    mapUrl: 'https://maps.app.goo.gl/XEbfZ3okbG1QkUC97',
   },
   {
     kind: 'reception',
