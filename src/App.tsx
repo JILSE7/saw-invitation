@@ -1,11 +1,13 @@
 import { adultsOnly, closing, gifts, passes } from './content/invitation'
+import { photos } from './content/photos'
 import { Countdown } from './sections/countdown/Countdown'
 import { DressCode } from './sections/dress-code/DressCode'
 import { Hero } from './sections/hero/Hero'
 import { Itinerary } from './sections/itinerary/Itinerary'
 import { MusicPlayer } from './sections/music/MusicPlayer'
-import { Rsvp } from './sections/rsvp/Rsvp'
 import { InvitationNotFound } from './sections/not-found/InvitationNotFound'
+import { Photo } from './sections/photo/Photo'
+import { Rsvp } from './sections/rsvp/Rsvp'
 import { Statement } from './sections/statement/Statement'
 import { Venues } from './sections/venues/Venues'
 import { useFamily } from './shared/hooks/useFamily'
@@ -26,14 +28,19 @@ export default function App() {
   return (
     <main>
       <Hero family={family} />
+      <Photo photo={photos.ring} priority />
       <Countdown />
       <Venues />
+      <Photo photo={photos.water} />
       <Itinerary />
       <Statement title={gifts.title} body={gifts.body} closing={gifts.closing} variant="framed" />
+      <Photo photo={photos.bench} />
       <DressCode />
       <Statement body={adultsOnly.body} />
+      <Photo photo={photos.walking} />
       <Statement body={passes.body} variant="tinted" />
       <Rsvp family={family} />
+      <Photo photo={photos.dock} />
       <Statement body={closing.body} variant="tinted" />
       <MusicPlayer />
     </main>

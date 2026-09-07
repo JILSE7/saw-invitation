@@ -1,0 +1,29 @@
+.figure {
+  margin: 0;
+  padding-block: var(--sp-8);
+  padding-inline: var(--sp-4);
+}
+
+.frame {
+  position: relative;
+  max-width: var(--content-max);
+  margin-inline: auto;
+  overflow: hidden;
+  /* Holds the photograph's colour while it loads, so the band never flashes
+     as a white gap on a slow connection. */
+  background: color-mix(in srgb, var(--c-lavender) 28%, transparent);
+}
+
+/**
+ * Taller than its frame on purpose: the extra 18% is the slack the parallax
+ * travels through. Without it the translation would drag an empty edge into
+ * view at the top or bottom of the scroll.
+ */
+.image {
+  position: absolute;
+  inset-inline: 0;
+  top: -9%;
+  width: 100%;
+  height: 118%;
+  object-fit: cover;
+}
