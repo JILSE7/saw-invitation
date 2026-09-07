@@ -54,9 +54,9 @@ export const venues: readonly Venue[] = [
     kind: 'reception',
     title: 'Recepción',
     time: '3:30 pm',
-    place: '', // TODO(transcribe)
-    address: '', // TODO(transcribe)
-    mapUrl: '', // TODO(provide)
+    place: 'San José De Gracia',
+    address: 'Tepic 51, Hab Valle Ceylan, 54150 Tlalnepantla, Méx.',
+    mapUrl: 'https://maps.app.goo.gl/xnNyTfhvzcbpWrLf6'
   },
 ]
 
