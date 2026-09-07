@@ -28,6 +28,9 @@
 .address {
   max-width: 30ch;
   margin: var(--sp-2) auto var(--sp-6);
+  /* Declared, not inherited: <address> is italic only by user-agent default,
+     and a reset that normalised it away would silently change the tone. */
+  font-style: italic;
   font-size: var(--fs-sm);
   color: var(--text-muted);
 }

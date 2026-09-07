@@ -47,9 +47,7 @@ export const venues: readonly Venue[] = [
     title: 'Ceremonia Religiosa',
     time: '1:30 pm',
     place: 'Parroquia de La Sagrada Familia',
-    // TODO(transcribe): the short link resolves to a name and coordinates
-    // (19.541583, -99.1754863) but carries no street address.
-    address: '',
+    address: 'Nápoles S/N, Hab Izcalli Piramide, 54140 Tlalnepantla, Méx.',
     mapUrl: 'https://maps.app.goo.gl/XEbfZ3okbG1QkUC97',
   },
   {
