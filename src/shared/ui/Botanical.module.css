@@ -1,0 +1,47 @@
+.divider {
+  display: block;
+  width: min(220px, 60%);
+  margin: var(--sp-4) auto var(--sp-2);
+  color: var(--c-lavender);
+}
+
+.corner {
+  position: absolute;
+  width: clamp(56px, 16vw, 84px);
+  color: color-mix(in srgb, var(--c-lavender) 78%, var(--c-plum));
+  pointer-events: none;
+}
+
+.topStart {
+  top: var(--sp-3);
+  inset-inline-start: var(--sp-3);
+}
+
+/* Mirrored rather than rotated: a rotated vine would sweep the wrong way and
+   read as a different plant on the opposite corner. */
+.topEnd {
+  top: var(--sp-3);
+  inset-inline-end: var(--sp-3);
+  transform: scaleX(-1);
+}
+
+.bottomStart {
+  bottom: var(--sp-3);
+  inset-inline-start: var(--sp-3);
+  transform: scaleY(-1);
+}
+
+.bottomEnd {
+  bottom: var(--sp-3);
+  inset-inline-end: var(--sp-3);
+  transform: scale(-1);
+}
+
+.stroke {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.1;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}

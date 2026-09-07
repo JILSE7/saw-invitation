@@ -7,7 +7,9 @@ import styles from './Itinerary.module.css'
 export function Itinerary() {
   return (
     <section className={styles.section}>
-      <SectionTitle variant="engraved">Itinerario</SectionTitle>
+      <SectionTitle variant="engraved" rule>
+        Itinerario
+      </SectionTitle>
 
       <Reveal stagger>
         <ol className={styles.list}>

@@ -26,7 +26,11 @@ export function Statement({ title, body, closing, variant = 'plain' }: Statement
   return (
     <section className={className}>
       <Reveal className={styles.inner} stagger>
-        {title && <SectionTitle variant="engraved">{title}</SectionTitle>}
+        {title && (
+          <SectionTitle variant="engraved" rule>
+            {title}
+          </SectionTitle>
+        )}
         <p className={styles.body}>{body}</p>
         {closing && <p className={styles.closing}>{closing}</p>}
       </Reveal>

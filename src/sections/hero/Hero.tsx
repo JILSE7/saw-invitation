@@ -1,5 +1,6 @@
 import type { Family } from '../../content/families'
 import { couple, envelope, intro, weddingDate } from '../../content/invitation'
+import { CornerVine } from '../../shared/ui/Botanical'
 import { useGsapContext } from '../../shared/hooks/useGsapContext'
 import { usePrefersReducedMotion } from '../../shared/hooks/usePrefersReducedMotion'
 import { gsap } from '../../shared/lib/gsap'
@@ -49,6 +50,9 @@ export function Hero({ family }: HeroProps) {
         <div className={styles.back} aria-hidden="true" />
 
         <article className={styles.card}>
+          <CornerVine at="topStart" />
+          <CornerVine at="topEnd" />
+
           <p className={styles.eyebrow}>{intro.eyebrow}</p>
 
           <h1 className={styles.names}>

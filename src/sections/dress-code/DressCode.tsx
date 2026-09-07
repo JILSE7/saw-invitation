@@ -8,7 +8,9 @@ export function DressCode() {
   return (
     <section className={styles.section}>
       <Reveal stagger>
-        <SectionTitle variant="engraved">{dressCode.title}</SectionTitle>
+        <SectionTitle variant="engraved" rule>
+          {dressCode.title}
+        </SectionTitle>
         <p className={styles.value}>{dressCode.value}</p>
         <div className={styles.figures}>
           <div className={styles.figure}>

@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { Divider } from './Botanical'
 import styles from './SectionTitle.module.css'
 
 type SectionTitleProps = {
@@ -9,8 +10,20 @@ type SectionTitleProps = {
    */
   readonly variant?: 'script' | 'engraved'
   readonly as?: 'h1' | 'h2' | 'h3'
+  /** Draws the botanical rule beneath the heading. */
+  readonly rule?: boolean
 }
 
-export function SectionTitle({ children, variant = 'script', as: Tag = 'h2' }: SectionTitleProps) {
-  return <Tag className={styles[variant]}>{children}</Tag>
+export function SectionTitle({
+  children,
+  variant = 'script',
+  as: Tag = 'h2',
+  rule = false,
+}: SectionTitleProps) {
+  return (
+    <>
+      <Tag className={styles[variant]}>{children}</Tag>
+      {rule && <Divider />}
+    </>
+  )
 }
