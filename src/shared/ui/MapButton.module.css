@@ -1,0 +1,29 @@
+.button {
+  display: inline-block;
+  padding: var(--sp-3) var(--sp-8);
+  border: 1px solid var(--c-lavender);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--c-plum);
+  font-family: var(--font-label);
+  font-size: var(--fs-sm);
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition:
+    background-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+
+.button:hover {
+  background: var(--c-lavender);
+  color: var(--c-paper);
+}
+
+.pending {
+  composes: button;
+  border-style: dashed;
+  color: var(--text-muted);
+  cursor: not-allowed;
+}

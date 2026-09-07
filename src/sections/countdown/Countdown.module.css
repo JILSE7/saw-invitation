@@ -1,0 +1,42 @@
+.band {
+  background: var(--c-plum-deep);
+  color: var(--text-on-band);
+  padding-block: var(--sp-6);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  max-width: var(--content-max);
+  margin-inline: auto;
+  text-align: center;
+}
+
+.unit + .unit {
+  border-inline-start: 1px solid color-mix(in srgb, var(--c-lavender) 35%, transparent);
+}
+
+.value {
+  display: block;
+  font-family: var(--font-display);
+  font-size: var(--fs-xl);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.label {
+  display: block;
+  margin-block-start: var(--sp-2);
+  font-family: var(--font-label);
+  font-size: var(--fs-xs);
+  font-weight: 300;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+
+.past {
+  text-align: center;
+  font-family: var(--font-script);
+  font-size: var(--fs-lg);
+}

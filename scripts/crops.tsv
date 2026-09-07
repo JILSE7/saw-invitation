@@ -1,0 +1,5 @@
+# Regions to cut out of the source export.
+# Coordinates are in SOURCE pixels (the 1490px-wide file), not CSS pixels.
+# Fill these in after running: scripts/art.sh bands <source.png>
+#
+# name	x	y	w	h

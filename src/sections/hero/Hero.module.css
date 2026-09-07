@@ -1,0 +1,198 @@
+.hero {
+  /**
+   * Envelope geometry.
+   *
+   * The body is a short pocket anchored to the bottom — the card is far
+   * taller and rises out of it. An envelope drawn tall enough to contain the
+   * whole card stops reading as an envelope and starts reading as a house.
+   */
+  --body-h: clamp(150px, 36vw, 210px);
+  --tuck: 0.62; /* fraction of the body that overlaps the card */
+  --flap-h: clamp(84px, 23vw, 132px);
+  --wall: clamp(26px, 8vw, 46px);
+
+  background: var(--bg-page);
+  padding-block: var(--sp-12) var(--sp-16);
+  padding-inline: var(--sp-2);
+}
+
+/**
+ * `perspective` without `transform-style: preserve-3d`.
+ *
+ * preserve-3d would sort these children by 3D position and ignore z-index
+ * entirely, which breaks the one thing an envelope depends on: the card
+ * sitting between the back panel and the front pocket. Only the flap needs
+ * real 3D, and a leaf element gets that from the parent's perspective alone.
+ */
+.envelope {
+  position: relative;
+  max-width: calc(var(--content-max) + var(--wall) * 2);
+  margin-inline: auto;
+  perspective: 1600px;
+  /* Reserves the un-tucked slice of the body below the card. A bottom
+     margin on the card cannot do this: with nothing to separate them the
+     child's margin collapses straight through this box and the card lands
+     flush on the envelope's bottom edge, buried under the pocket. */
+  padding-block-end: calc(var(--body-h) * (1 - var(--tuck)));
+}
+
+/* Folded back and standing above the body, behind the card. Open is the
+   resting state, so a failed animation still shows a readable invitation. */
+.flap {
+  position: absolute;
+  inset-inline: 0;
+  bottom: var(--body-h);
+  z-index: 0;
+  height: var(--flap-h);
+  background: linear-gradient(to top, var(--c-plum) 0%, var(--c-plum-deep) 100%);
+  /* A trapezoid, not a triangle. A triangle's height falls to zero at the
+     outer edges, which is exactly where the card stops covering it — the
+     wings would be invisible however tall the flap got. Steep shoulders
+     keep real height at the card's margin. */
+  clip-path: polygon(0 100%, 13% 0, 87% 0, 100% 100%);
+  transform-origin: bottom center;
+}
+
+.back {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 1;
+  height: var(--body-h);
+  background: var(--c-plum-deep);
+}
+
+.card {
+  position: relative;
+  z-index: 2;
+  margin-inline: var(--wall);
+  background: var(--bg-card);
+  padding: var(--sp-12) var(--sp-6);
+  /* Keeps every line of copy clear of the pocket overlapping below. */
+  padding-block-end: calc(var(--body-h) * var(--tuck) + var(--sp-6));
+  text-align: center;
+  box-shadow: 0 18px 40px -18px rgb(30 16 38 / 0.35);
+}
+
+.pocket {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 3;
+  height: var(--body-h);
+  background: var(--c-plum);
+  clip-path: polygon(0 12%, 50% 0, 100% 12%, 100% 100%, 0 100%);
+}
+
+/**
+ * The addressee, written across the front of the pocket the way a real
+ * envelope carries it.
+ *
+ * It sits above the pocket instead of inside it: the pocket is aria-hidden
+ * decoration, and the family name is the one piece of real text down here.
+ * Anchored to the bottom and sized to the lower slice of the body so the
+ * lines stay clear of the V fold along the pocket's top edge.
+ */
+.addressee {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 4;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: var(--sp-1);
+  height: calc(var(--body-h) * 0.78);
+  padding-inline: var(--wall);
+  text-align: center;
+}
+
+.addresseeLabel {
+  font-family: var(--font-label);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--c-paper) 60%, transparent);
+}
+
+.addresseeName {
+  font-family: var(--font-script);
+  /* Sized to read as handwriting on the envelope, not as a caption. A long
+     household name wraps to a second line on a narrow screen — the .addressee
+     box is tall enough for two, so wrapping costs nothing and undersized
+     script costs the whole effect. */
+  font-size: clamp(1.85rem, 1.35rem + 2.3vw, 2.75rem);
+  line-height: 1.25;
+  color: var(--c-paper);
+  text-wrap: balance;
+}
+
+/* A single highlight along the folded top edge, so the pocket reads as
+   paper folded up rather than a flat block of colour. */
+.pocket::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgb(255 255 255 / 0.1), transparent 38%);
+  clip-path: inherit;
+}
+
+.eyebrow {
+  font-family: var(--font-script);
+  font-size: var(--fs-lg);
+  color: var(--c-plum);
+}
+
+.names {
+  margin-block: var(--sp-4);
+  font-family: var(--font-display);
+  font-size: var(--fs-2xl);
+  font-weight: 300;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--c-plum);
+}
+
+.ampersand {
+  display: block;
+  font-family: var(--font-script);
+  font-size: 0.5em;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--c-lavender);
+}
+
+.body {
+  max-width: 34ch;
+  margin-inline: auto;
+  font-style: italic;
+  color: var(--text-muted);
+}
+
+.dateBar {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: var(--sp-4);
+  margin-block-start: var(--sp-8);
+  padding-block: var(--sp-3);
+  border-block: 1px solid var(--rule);
+  font-family: var(--font-label);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.day {
+  font-family: var(--font-display);
+  font-size: var(--fs-xl);
+  letter-spacing: 0;
+  color: var(--c-plum);
+}
+
+.month {
+  display: block;
+  font-size: var(--fs-xs);
+  letter-spacing: 0.2em;
+}

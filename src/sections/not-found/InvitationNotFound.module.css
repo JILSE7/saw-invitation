@@ -1,0 +1,27 @@
+.section {
+  display: grid;
+  place-items: center;
+  min-height: 100dvh;
+  padding: var(--sp-8) var(--sp-6);
+  background: var(--c-lavender-soft);
+}
+
+.card {
+  max-width: var(--content-max);
+  padding: var(--sp-12) var(--sp-8);
+  background: var(--bg-card);
+  border: 1px solid var(--rule);
+  text-align: center;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: var(--fs-xl);
+  font-weight: 400;
+}
+
+.body {
+  margin-block-start: var(--sp-4);
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+}

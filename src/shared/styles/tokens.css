@@ -1,0 +1,72 @@
+/**
+ * Design tokens.
+ *
+ * PROVISIONAL: every colour below is eyeballed from the low-resolution
+ * preview. Run `scripts/art.sh palette <source.png>` once the full-size
+ * export is on disk and replace these with the sampled values. The floral
+ * crops carry their own baked-in background, so any mismatch here shows up
+ * as a visible seam around them.
+ */
+:root {
+  /* Palette */
+  --c-plum: #3e2a47;
+  --c-plum-deep: #2c1d34;
+  --c-lavender: #a794c4;
+  --c-lavender-soft: #ede7f3;
+  --c-blush: #e7d3ce;
+  --c-paper: #faf6f0;
+  --c-white: #ffffff;
+  --c-ink: #4a4a52;
+  --c-ink-soft: #7d7a85;
+  --c-sage: #8fa37e;
+
+  /* Semantic */
+  --bg-page: var(--c-lavender-soft);
+  --bg-card: var(--c-paper);
+  --bg-band: var(--c-plum);
+  --text-body: var(--c-ink);
+  --text-muted: var(--c-ink-soft);
+  --text-on-band: var(--c-paper);
+  --rule: color-mix(in srgb, var(--c-lavender) 45%, transparent);
+
+  /* Type families — confirm against the source before locking in. */
+  --font-script: 'Pinyon Script', 'Apple Chancery', cursive;
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body: 'EB Garamond', Georgia, serif;
+  --font-label: 'Jost', system-ui, sans-serif;
+
+  /* Fluid type scale */
+  --fs-xs: clamp(0.68rem, 0.62rem + 0.3vw, 0.78rem);
+  --fs-sm: clamp(0.82rem, 0.76rem + 0.3vw, 0.94rem);
+  --fs-md: clamp(0.98rem, 0.9rem + 0.4vw, 1.12rem);
+  --fs-lg: clamp(1.35rem, 1.1rem + 1.2vw, 1.85rem);
+  --fs-xl: clamp(2rem, 1.5rem + 2.4vw, 3.1rem);
+  --fs-2xl: clamp(2.8rem, 2rem + 3.6vw, 4.4rem);
+
+  /* Spacing */
+  --sp-1: 0.25rem;
+  --sp-2: 0.5rem;
+  --sp-3: 0.75rem;
+  --sp-4: 1rem;
+  --sp-6: 1.5rem;
+  --sp-8: 2rem;
+  --sp-12: 3rem;
+  --sp-16: 4rem;
+
+  /**
+   * Hard ceiling for the content column.
+   * The source art is 1490px wide, so 500px keeps every asset at ~3x
+   * density. Raising this number makes the art soft. Do not raise it.
+   */
+  --content-max: 500px;
+
+  --radius-pill: 999px;
+  --dur-fast: 200ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-fast: 1ms;
+  }
+}

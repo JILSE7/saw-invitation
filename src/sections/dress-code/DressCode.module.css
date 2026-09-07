@@ -1,0 +1,33 @@
+.section {
+  max-width: var(--content-max);
+  margin-inline: auto;
+  padding: var(--sp-12) var(--sp-6);
+  text-align: center;
+}
+
+.value {
+  margin-block: var(--sp-4);
+  font-family: var(--font-script);
+  font-size: var(--fs-xl);
+  color: var(--c-plum);
+}
+
+.figures {
+  display: flex;
+  justify-content: center;
+  gap: var(--sp-8);
+  margin-block: var(--sp-6);
+}
+
+/* Placeholder until the dress and tuxedo line art is traced to SVG. */
+.figure {
+  width: 84px;
+  aspect-ratio: 2 / 3;
+  border: 1px dashed var(--rule);
+}
+
+.note {
+  font-family: var(--font-script);
+  font-size: var(--fs-lg);
+  color: var(--c-plum);
+}

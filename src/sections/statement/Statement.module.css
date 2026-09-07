@@ -1,0 +1,32 @@
+.section {
+  padding-block: var(--sp-12);
+}
+
+.inner {
+  max-width: var(--content-max);
+  margin-inline: auto;
+  padding-inline: var(--sp-6);
+  text-align: center;
+}
+
+.framed .inner {
+  border: 1px solid var(--rule);
+  padding: var(--sp-12) var(--sp-6);
+}
+
+.tinted {
+  background: var(--c-lavender-soft);
+}
+
+.body {
+  max-width: 36ch;
+  margin-inline: auto;
+  font-style: italic;
+}
+
+.closing {
+  margin-block-start: var(--sp-6);
+  font-family: var(--font-script);
+  font-size: var(--fs-lg);
+  color: var(--c-plum);
+}
