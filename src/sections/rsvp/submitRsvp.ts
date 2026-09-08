@@ -1,4 +1,4 @@
-import { RSVP_ENDPOINT } from './rsvpEndpoint'
+import { RSVP_ENDPOINT } from '../../shared/api/invitation'
 
 export const MESSAGE_MAX_LENGTH = 500
 

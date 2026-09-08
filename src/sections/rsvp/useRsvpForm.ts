@@ -1,7 +1,5 @@
 import { useState, type FormEvent } from 'react'
-import type { Family } from '../../content/families'
-import type { RsvpAnswer } from './fetchRsvpAnswer'
-import { isRsvpConfigured } from './rsvpEndpoint'
+import { isRsvpConfigured, type Family, type RsvpAnswer } from '../../shared/api/invitation'
 import { MESSAGE_MAX_LENGTH, submitRsvp } from './submitRsvp'
 
 export type RsvpStatus = 'idle' | 'submitting' | 'success' | 'error' | 'unconfigured'

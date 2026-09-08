@@ -99,7 +99,6 @@ export const rsvp = {
     yes: 'Sí, asistiremos',
     no: 'No podremos asistir',
   },
-  checking: 'Buscando tu confirmación…',
   answered: {
     body: 'Ya recibimos tu respuesta.',
     attending: (guests: number) =>
@@ -135,7 +134,22 @@ export const envelope = {
   addresseeLabel: 'Para',
 } as const
 
+export const loader = {
+  label: 'Abriendo tu invitación',
+} as const
+
 export const notFound = {
   title: 'No encontramos esta invitación.',
   body: 'Verifica que el enlace sea correcto.',
+} as const
+
+/**
+ * Shown when the guest list could not be reached at all. Deliberately never
+ * says the invitation does not exist: the guest is real, the connection is
+ * not.
+ */
+export const unreachable = {
+  title: 'No pudimos abrir tu invitación.',
+  body: 'Puede ser tu conexión. Intenta de nuevo en un momento.',
+  action: 'Reintentar',
 } as const

@@ -1,16 +1,18 @@
-import { adultsOnly, closing, gifts, passes } from './content/invitation'
+import { adultsOnly, closing, gifts, notFound, passes, unreachable } from './content/invitation'
 import { photos } from './content/photos'
 import { Countdown } from './sections/countdown/Countdown'
 import { DressCode } from './sections/dress-code/DressCode'
 import { Hero } from './sections/hero/Hero'
 import { Itinerary } from './sections/itinerary/Itinerary'
 import { MusicPlayer } from './sections/music/MusicPlayer'
-import { InvitationNotFound } from './sections/not-found/InvitationNotFound'
+import { InvitationLoader } from './sections/loader/InvitationLoader'
+import { InvitationNotice } from './sections/notice/InvitationNotice'
 import { Photo } from './sections/photo/Photo'
 import { Rsvp } from './sections/rsvp/Rsvp'
 import { Statement } from './sections/statement/Statement'
 import { Venues } from './sections/venues/Venues'
 import { useFamily } from './shared/hooks/useFamily'
+import { useHoldWhile } from './shared/hooks/useHoldWhile'
 
 /**
  * The invitation is a single scrolling document, so composition order here is
@@ -18,12 +20,31 @@ import { useFamily } from './shared/hooks/useFamily'
  * placed yet: they land once the source export is sliced.
  */
 export default function App() {
-  const { state, family } = useFamily()
+  const { state, family, answer, retry } = useFamily()
+  const loading = useHoldWhile(state === 'loading', 700)
 
-  // A link that names nobody is a mistake worth stopping on. A link with no
-  // family at all is just the invitation itself, so it still renders — only
-  // the RSVP asks for a personal link.
-  if (state === 'unknown') return <InvitationNotFound />
+  // The guest list lives in the sheet, so the family behind `?familia=` is not
+  // known at first paint. The loader covers that ask rather than letting the
+  // envelope render nameless and then fill in.
+  if (loading) return <InvitationLoader />
+
+  // Two failures that must never be told as one. `unknown` means the sheet
+  // answered and holds no such family — the link is wrong. `unreachable` means
+  // we never got to ask, and telling a genuinely invited guest their
+  // invitation does not exist would be a lie with no way back.
+  if (state === 'unknown') {
+    return <InvitationNotice title={notFound.title} body={notFound.body} />
+  }
+
+  if (state === 'unreachable') {
+    return (
+      <InvitationNotice
+        title={unreachable.title}
+        body={unreachable.body}
+        action={{ label: unreachable.action, onClick: retry }}
+      />
+    )
+  }
 
   return (
     <main>
@@ -39,7 +60,7 @@ export default function App() {
       <Statement body={adultsOnly.body} />
       <Photo photo={photos.walking} />
       <Statement body={passes.body} variant="tinted" />
-      <Rsvp family={family} />
+      <Rsvp family={family} answer={answer} />
       <Photo photo={photos.dock} ornament />
       <Statement body={closing.body} variant="tinted" />
       <MusicPlayer />

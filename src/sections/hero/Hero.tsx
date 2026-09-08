@@ -1,4 +1,4 @@
-import type { Family } from '../../content/families'
+import type { Family } from '../../shared/api/invitation'
 import { couple, envelope, intro, weddingDate } from '../../content/invitation'
 import { CornerVine } from '../../shared/ui/Botanical'
 import { useGsapContext } from '../../shared/hooks/useGsapContext'

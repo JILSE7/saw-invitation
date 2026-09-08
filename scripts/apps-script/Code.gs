@@ -12,13 +12,17 @@
  *
  * The spreadsheet needs two sheets; the other two are created for you:
  *   Responses — Timestamp | Family ID | Family | Confirmed | Guests | Message
- *   Families  — Family ID | Family | Guests   (mirror of src/content/families.ts)
+ *   Families  — Family ID | Family | Guests   (the guest list itself)
  *   Historial — created on the first submission; every answer ever sent
  *   Resumen   — created by buildSummary(); the full roster and totals
  *
- * Families exists because the frontend list ships in a public bundle: anyone
- * can edit the payload in DevTools. This sheet is the only copy the guest
- * cannot touch, so it — not the request — decides the pass ceiling.
+ * Families is the guest list. It is the only copy: the site no longer ships
+ * one, so a name and a pass count cannot be read out of the bundle, and there
+ * is no second list to drift out of step with this one.
+ *
+ * Editing a row here changes what the invitation says on the next load. An id
+ * removed from this sheet stops resolving, which is how an invitation is
+ * revoked.
  */
 
 var RESPONSES_SHEET = 'Responses';
