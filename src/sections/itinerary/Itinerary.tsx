@@ -1,4 +1,4 @@
-import { itinerary } from '../../content/invitation'
+import { itinerary, itineraryTitle } from '../../content/itinerary'
 import { Icon } from '../../shared/ui/Icon'
 import { Reveal } from '../../shared/ui/Reveal'
 import { SectionTitle } from '../../shared/ui/SectionTitle'
@@ -8,7 +8,7 @@ export function Itinerary() {
   return (
     <section className={styles.section}>
       <SectionTitle variant="engraved" rule>
-        Itinerario
+        {itineraryTitle}
       </SectionTitle>
 
       <Reveal stagger>

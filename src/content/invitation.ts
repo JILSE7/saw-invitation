@@ -1,5 +1,3 @@
-import type { IconName } from '../shared/ui/Icon'
-
 /**
  * Single source of truth for every piece of invitation copy and data.
  * Sections read from here — never hardcode text inside JSX.
@@ -58,23 +56,6 @@ export const venues: readonly Venue[] = [
     address: 'Tepic 51, Hab Valle Ceylan, 54150 Tlalnepantla, Méx.',
     mapUrl: 'https://maps.app.goo.gl/xnNyTfhvzcbpWrLf6'
   },
-]
-
-export type ItineraryItem = {
-  readonly label: string
-  readonly time: string
-  /** Glyph drawn by the shared Icon component. */
-  readonly icon: IconName
-}
-
-// TODO(transcribe): confirm every label and time against the source PNG.
-export const itinerary: readonly ItineraryItem[] = [
-  { label: 'Ceremonia', time: '1:00 PM', icon: 'rings' },
-  { label: 'Recepción', time: '3:30 PM', icon: 'arch' },
-  { label: 'Brindis', time: '', icon: 'toast' },
-  { label: 'Vals', time: '', icon: 'waltz' },
-  { label: 'Cena', time: '5:00 PM', icon: 'dinner' },
-  { label: 'Baile', time: '9:00 PM', icon: 'dance' },
 ]
 
 export const gifts = {
