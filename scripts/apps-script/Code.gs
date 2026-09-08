@@ -8,6 +8,8 @@
  * doGet answers a lookup so a guest who already confirmed is shown their
  * answer instead of an empty form.
  *
+ * Run buildSummary() once from the editor to add a third, derived sheet.
+ *
  * The spreadsheet needs two sheets:
  *   Responses — Timestamp | Family ID | Family | Confirmed | Guests | Message
  *   Families  — Family ID | Family | Guests   (mirror of src/content/families.ts)
@@ -18,6 +20,7 @@
  */
 
 var RESPONSES_SHEET = 'Responses';
+var SUMMARY_SHEET = 'Resumen';
 var FAMILIES_SHEET = 'Families';
 var MESSAGE_MAX_LENGTH = 500;
 
@@ -140,4 +143,63 @@ function json(body) {
   return ContentService
     .createTextOutput(JSON.stringify(body))
     .setMimeType(ContentService.MimeType.JSON);
+}
+
+/**
+ * Builds the Resumen tab: one row per family, showing only its current answer.
+ *
+ * Responses stays append-only, so a household that changed its mind keeps
+ * every row it wrote. But a couple counting heads should not have to read a
+ * log — summing the Guests column there double-counts anyone who replied
+ * twice. This sheet is the number to trust; Responses is the record of how it
+ * got there.
+ *
+ * Run it from the editor after the guest list changes. The formulas refresh
+ * themselves as confirmations arrive.
+ */
+function buildSummary() {
+  var book = SpreadsheetApp.getActiveSpreadsheet();
+  var count = Math.max(sheet(FAMILIES_SHEET).getLastRow() - 1, 1);
+
+  var summary = book.getSheetByName(SUMMARY_SHEET);
+  if (!summary) summary = book.insertSheet(SUMMARY_SHEET);
+  summary.clear();
+
+  summary.appendRow(['ID', 'Familia', 'Pases', 'Asiste', 'Personas', 'Mensaje', 'Actualizado']);
+  summary.getRange(1, 1, 1, 7).setFontWeight('bold');
+  summary.setFrozenRows(1);
+
+  var formulas = [];
+  for (var i = 0; i < count; i++) {
+    var row = i + 2;
+    formulas.push([
+      '=Families!A' + row,
+      '=Families!B' + row,
+      '=Families!C' + row,
+      '=IFERROR(IF(' + latest(row, 'D') + ',"Sí","No"),"—")',
+      '=IFERROR(' + latest(row, 'E') + ',0)',
+      '=IFERROR(' + latest(row, 'F') + ',"")',
+      '=IFERROR(' + latest(row, 'A') + ',"")',
+    ]);
+  }
+  summary.getRange(2, 1, count, 7).setFormulas(formulas);
+
+  var totals = count + 3;
+  summary.getRange(totals, 4).setValue('Personas confirmadas');
+  summary.getRange(totals, 5).setFormula('=SUM(E2:E' + (count + 1) + ')');
+  summary.getRange(totals + 1, 4).setValue('Familias sin responder');
+  summary.getRange(totals + 1, 5).setFormula('=COUNTIF(D2:D' + (count + 1) + ',"—")');
+  summary.getRange(totals, 4, 2, 1).setFontWeight('bold');
+}
+
+/**
+ * The value in `column` on the LAST Responses row belonging to this family.
+ *
+ * LOOKUP(2, 1/(range = value), result) is the spreadsheet idiom for exactly
+ * that: non-matching rows divide by zero, LOOKUP skips errors, and the last
+ * survivor wins. It is the same rule findLatestResponse follows, which is why
+ * the sheet and the invitation never disagree.
+ */
+function latest(row, column) {
+  return 'LOOKUP(2,1/(Responses!$B$2:$B=$A' + row + '),Responses!$' + column + '$2:$' + column + ')';
 }
