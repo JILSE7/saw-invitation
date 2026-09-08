@@ -8,11 +8,13 @@
  * doGet answers a lookup so a guest who already confirmed is shown their
  * answer instead of an empty form.
  *
- * Run buildSummary() once from the editor to add a third, derived sheet.
+ * Run buildSummary() once from the editor to add the Resumen sheet.
  *
- * The spreadsheet needs two sheets:
+ * The spreadsheet needs two sheets; the other two are created for you:
  *   Responses — Timestamp | Family ID | Family | Confirmed | Guests | Message
  *   Families  — Family ID | Family | Guests   (mirror of src/content/families.ts)
+ *   Historial — created on the first submission; every answer ever sent
+ *   Resumen   — created by buildSummary(); the full roster and totals
  *
  * Families exists because the frontend list ships in a public bundle: anyone
  * can edit the payload in DevTools. This sheet is the only copy the guest
@@ -20,11 +22,23 @@
  */
 
 var RESPONSES_SHEET = 'Responses';
+var HISTORY_SHEET = 'Historial';
 var SUMMARY_SHEET = 'Resumen';
 var FAMILIES_SHEET = 'Families';
 var MESSAGE_MAX_LENGTH = 500;
+var RESPONSE_HEADERS = ['Timestamp', 'Family ID', 'Family', 'Confirmed', 'Guests', 'Message'];
 
 function doPost(e) {
+  // The upsert reads the sheet before writing it. Without a lock, two
+  // families confirming in the same second both see the same rows and one
+  // write lands on top of the other.
+  var lock = LockService.getScriptLock();
+  try {
+    lock.waitLock(20000);
+  } catch (busy) {
+    return json({ success: false, error: 'busy' });
+  }
+
   try {
     if (!e || !e.postData || !e.postData.contents) {
       return json({ success: false, error: 'empty_body' });
@@ -54,21 +68,59 @@ function doPost(e) {
       ? payload.message.slice(0, MESSAGE_MAX_LENGTH)
       : '';
 
-    // Every submission is appended, never overwritten: a family that changes
-    // its mind leaves an audit trail instead of silently rewriting history.
-    sheet(RESPONSES_SHEET).appendRow([
-      new Date(),
-      family.id,
-      family.name,
-      payload.confirmed,
-      guests,
-      message,
-    ]);
+    var row = [new Date(), family.id, family.name, payload.confirmed, guests, message];
+
+    // Responses holds one row per family, so the sheet a couple opens can be
+    // counted directly: a household that changes its mind edits its own row
+    // rather than adding a second one that inflates the total.
+    //
+    // Historial keeps every answer ever sent, so "they had said six" is still
+    // an answerable question a week before the wedding.
+    upsertResponse(row, family.id);
+    ensureSheet(HISTORY_SHEET, RESPONSE_HEADERS).appendRow(row);
 
     return json({ success: true });
   } catch (error) {
     return json({ success: false, error: String(error) });
+  } finally {
+    lock.releaseLock();
   }
+}
+
+/**
+ * Replaces this family's row, or adds it the first time.
+ *
+ * Matching is on the id in column B, never the name: two households can share
+ * a name, and the name is what the guest list is free to reword.
+ */
+function upsertResponse(row, familyId) {
+  var target = sheet(RESPONSES_SHEET);
+  var last = target.getLastRow();
+
+  if (last >= 2) {
+    var ids = target.getRange(2, 2, last - 1, 1).getValues();
+    for (var i = 0; i < ids.length; i++) {
+      if (String(ids[i][0]).trim() === familyId) {
+        target.getRange(i + 2, 1, 1, row.length).setValues([row]);
+        return;
+      }
+    }
+  }
+
+  target.appendRow(row);
+}
+
+/** Creates a derived sheet on first use, so it is not another setup step. */
+function ensureSheet(name, headers) {
+  var book = SpreadsheetApp.getActiveSpreadsheet();
+  var found = book.getSheetByName(name);
+  if (found) return found;
+
+  found = book.insertSheet(name);
+  found.appendRow(headers);
+  found.getRange(1, 1, 1, headers.length).setFontWeight('bold');
+  found.setFrozenRows(1);
+  return found;
 }
 
 /**
@@ -99,11 +151,12 @@ function doGet(e) {
 }
 
 /**
- * The last row for a family, not the first.
+ * This family's current answer, or null if it has never replied.
  *
- * Responses is append-only by design, so a household that changed its mind
- * has several rows. Scanning upward from the bottom is what makes the newest
- * answer the current one.
+ * Responses holds one row per family, so this normally finds it on the first
+ * hit. Scanning upward rather than downward is deliberate anyway: if a row is
+ * ever duplicated by hand, the newest still wins — the same rule the Resumen
+ * formulas apply.
  */
 function findLatestResponse(id) {
   var rows = sheet(RESPONSES_SHEET).getDataRange().getValues();
@@ -146,13 +199,12 @@ function json(body) {
 }
 
 /**
- * Builds the Resumen tab: one row per family, showing only its current answer.
+ * Builds the Resumen tab: every invited family, answered or not.
  *
- * Responses stays append-only, so a household that changed its mind keeps
- * every row it wrote. But a couple counting heads should not have to read a
- * log — summing the Guests column there double-counts anyone who replied
- * twice. This sheet is the number to trust; Responses is the record of how it
- * got there.
+ * Responses only has rows for households that replied, so it cannot answer
+ * the question a couple actually asks in the last week — who still has not
+ * said anything. This sheet lists the whole guest list beside its current
+ * answer, and totals the confirmed headcount and the silence.
  *
  * Run it from the editor after the guest list changes. The formulas refresh
  * themselves as confirmations arrive.
@@ -197,8 +249,9 @@ function buildSummary() {
  *
  * LOOKUP(2, 1/(range = value), result) is the spreadsheet idiom for exactly
  * that: non-matching rows divide by zero, LOOKUP skips errors, and the last
- * survivor wins. It is the same rule findLatestResponse follows, which is why
- * the sheet and the invitation never disagree.
+ * survivor wins. Responses normally holds one row per family, so this reads
+ * that row — and it stays correct if one is ever duplicated by hand, because
+ * it resolves ties the same way findLatestResponse does.
  */
 function latest(row, column) {
   return 'LOOKUP(2,1/(Responses!$B$2:$B=$A' + row + '),Responses!$' + column + '$2:$' + column + ')';
