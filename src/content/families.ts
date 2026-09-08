@@ -28,10 +28,7 @@ export const families: readonly Family[] = [
   { id: 'tia-elena', name: 'Tía Elena', guests: 4 },
   { id: 'pao', name: 'Pao', guests: 2 },
   { id: 'tia-pera', name: 'Tía Pera', guests: 2 },
-  // TODO(provide): both columns of the planning sheet list a MAMA. These two
-  // ids must say whose before any link goes out — a collision here sends one
-  // mother the other's invitation and the wrong pass count.
-  { id: 'mama-1', name: 'Mamá', guests: 4 },
+  { id: 'rosario-ruiz', name: 'Rosario Ruiz', guests: 4 },
 
   // Amigos — 21 pases
   { id: 'liss', name: 'Liss', guests: 2 },
@@ -60,8 +57,7 @@ export const families: readonly Family[] = [
   { id: 'tio-hector', name: 'Tío Héctor', guests: 8 },
   { id: 'tia-clau', name: 'Tía Clau', guests: 2 },
   { id: 'tio-joselito', name: 'Tío Joselito', guests: 4 },
-  // TODO(provide): see the note above.
-  { id: 'mama-2', name: 'Mamá', guests: 4 },
+  { id: 'irma-garcia', name: 'Irma García', guests: 4 },
 
   // Amigos — 20 pases
   { id: 'sebas', name: 'Sebas', guests: 2 },
