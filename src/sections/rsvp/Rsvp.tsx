@@ -1,10 +1,13 @@
+import { useState } from 'react'
 import type { Family } from '../../content/families'
 import { rsvp } from '../../content/invitation'
 import { Reveal } from '../../shared/ui/Reveal'
 import { SectionTitle } from '../../shared/ui/SectionTitle'
 import styles from './Rsvp.module.css'
+import type { RsvpAnswer } from './fetchRsvpAnswer'
 import { MESSAGE_MAX_LENGTH } from './submitRsvp'
 import { useRsvpForm } from './useRsvpForm'
+import { useRsvpStatus } from './useRsvpStatus'
 
 type RsvpProps = {
   /** Undefined when the invitation was opened without a personal link. */
@@ -23,12 +26,59 @@ export function Rsvp({ family }: RsvpProps) {
     )
   }
 
-  return <RsvpForm family={family} />
+  // Keyed so a different family never inherits the previous lookup.
+  return <RsvpGate key={family.id} family={family} />
 }
 
-function RsvpForm({ family }: { family: Family }) {
+/**
+ * Decides whether this family is replying or revisiting.
+ *
+ * The form is the fallback for everything the lookup cannot answer: still
+ * loading is the only state that hides it, and a failed lookup shows it. A
+ * guest must always be able to confirm.
+ */
+function RsvpGate({ family }: { family: Family }) {
+  const lookup = useRsvpStatus(family.id)
+  const [editing, setEditing] = useState(false)
+
+  if (lookup.state === 'checking') {
+    return (
+      <section className={styles.section}>
+        <div className={styles.card}>
+          <SectionTitle>{family.name}</SectionTitle>
+          <p className={styles.feedback}>{rsvp.checking}</p>
+        </div>
+      </section>
+    )
+  }
+
+  if (lookup.answer && !editing) {
+    return (
+      <section className={styles.section}>
+        <Reveal className={styles.card}>
+          <SectionTitle>{family.name}</SectionTitle>
+          <p className={styles.feedback}>{rsvp.answered.body}</p>
+          <p className={styles.answer}>
+            {lookup.answer.confirmed
+              ? rsvp.answered.attending(lookup.answer.guests)
+              : rsvp.answered.declined}
+          </p>
+          {/* Plans change, and Responses is append-only precisely so they
+              can: an edit adds a row rather than erasing the first answer. */}
+          <button type="button" className={styles.change} onClick={() => setEditing(true)}>
+            {rsvp.answered.change}
+          </button>
+        </Reveal>
+      </section>
+    )
+  }
+
+  return <RsvpForm family={family} previous={lookup.answer} />
+}
+
+function RsvpForm({ family, previous }: { family: Family; previous: RsvpAnswer | null }) {
   const { values, status, isSubmitting, setAttending, setGuests, setMessage, handleSubmit } =
-    useRsvpForm(family)
+    useRsvpForm(family, previous)
 
   if (status === 'success') {
     return (

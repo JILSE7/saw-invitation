@@ -1,3 +1,5 @@
+import { RSVP_ENDPOINT } from './rsvpEndpoint'
+
 export const MESSAGE_MAX_LENGTH = 500
 
 export type RsvpRequest = {
@@ -6,13 +8,6 @@ export type RsvpRequest = {
   confirmed: boolean
   guests: number
   message?: string
-}
-
-const ENDPOINT = import.meta.env.VITE_RSVP_ENDPOINT ?? ''
-
-/** False until VITE_RSVP_ENDPOINT is set, so the form can refuse to lie. */
-export function isRsvpConfigured(): boolean {
-  return ENDPOINT.length > 0
 }
 
 /**
@@ -27,7 +22,7 @@ export function isRsvpConfigured(): boolean {
  * successful write would be indistinguishable from a failed one.
  */
 export async function submitRsvp(data: RsvpRequest): Promise<void> {
-  const response = await fetch(ENDPOINT, {
+  const response = await fetch(RSVP_ENDPOINT, {
     method: 'POST',
     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
     body: JSON.stringify(data),

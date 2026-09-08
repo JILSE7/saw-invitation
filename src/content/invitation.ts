@@ -118,6 +118,14 @@ export const rsvp = {
     yes: 'Sí, asistiremos',
     no: 'No podremos asistir',
   },
+  checking: 'Buscando tu confirmación…',
+  answered: {
+    body: 'Ya recibimos tu respuesta.',
+    attending: (guests: number) =>
+      guests === 1 ? 'Confirmaste 1 lugar.' : `Confirmaste ${guests} lugares.`,
+    declined: 'Nos avisaste que no podrán acompañarnos.',
+    change: 'Modificar mi respuesta',
+  },
   submitLabel: 'Confirmar asistencia',
   submittingLabel: 'Enviando…',
   success: {

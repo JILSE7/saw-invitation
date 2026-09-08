@@ -150,3 +150,32 @@
 .error {
   color: #9b2c2c;
 }
+
+.answer {
+  margin-block-start: var(--sp-2);
+  font-family: var(--font-display);
+  font-size: var(--fs-lg);
+  color: var(--c-plum);
+}
+
+.change {
+  margin-block-start: var(--sp-6);
+  padding: var(--sp-2) var(--sp-6);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--text-muted);
+  font-family: var(--font-label);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out);
+}
+
+.change:hover {
+  border-color: var(--c-lavender);
+  color: var(--c-plum);
+}

@@ -5,6 +5,9 @@
  * Deploy > New deployment > Web app, "Execute as: Me",
  * "Who has access: Anyone". Copy the /exec URL into VITE_RSVP_ENDPOINT.
  *
+ * doGet answers a lookup so a guest who already confirmed is shown their
+ * answer instead of an empty form.
+ *
  * The spreadsheet needs two sheets:
  *   Responses — Timestamp | Family ID | Family | Confirmed | Guests | Message
  *   Families  — Family ID | Family | Guests   (mirror of src/content/families.ts)
@@ -63,6 +66,56 @@ function doPost(e) {
   } catch (error) {
     return json({ success: false, error: String(error) });
   }
+}
+
+/**
+ * Returns a family and its most recent answer, or null if it has never
+ * replied.
+ *
+ * A GET with no custom headers is a CORS simple request, so this skips the
+ * preflight Apps Script never answers — the same reason doPost is fed
+ * text/plain.
+ */
+function doGet(e) {
+  try {
+    var family = findFamily(e && e.parameter ? e.parameter.familyId : '');
+    if (!family) {
+      return json({ success: false, error: 'unknown_family' });
+    }
+
+    return json({
+      success: true,
+      family: { id: family.id, name: family.name, guests: family.guests },
+      response: findLatestResponse(family.id),
+    });
+  } catch (error) {
+    // Generic on purpose: this body reaches the browser, and "Missing sheet:
+    // Families" is a note to the maintainer, not to a guest.
+    return json({ success: false, error: 'server_error' });
+  }
+}
+
+/**
+ * The last row for a family, not the first.
+ *
+ * Responses is append-only by design, so a household that changed its mind
+ * has several rows. Scanning upward from the bottom is what makes the newest
+ * answer the current one.
+ */
+function findLatestResponse(id) {
+  var rows = sheet(RESPONSES_SHEET).getDataRange().getValues();
+  for (var i = rows.length - 1; i >= 1; i--) {
+    if (String(rows[i][1]).trim() !== id) continue;
+
+    var confirmed = rows[i][3];
+    return {
+      confirmed: confirmed === true || String(confirmed).toLowerCase() === 'true',
+      guests: Number(rows[i][4]) || 0,
+      message: String(rows[i][5] || ''),
+      at: rows[i][0] instanceof Date ? rows[i][0].toISOString() : String(rows[i][0]),
+    };
+  }
+  return null;
 }
 
 function findFamily(id) {

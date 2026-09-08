@@ -1,6 +1,8 @@
 import { useState, type FormEvent } from 'react'
 import type { Family } from '../../content/families'
-import { isRsvpConfigured, MESSAGE_MAX_LENGTH, submitRsvp } from './submitRsvp'
+import type { RsvpAnswer } from './fetchRsvpAnswer'
+import { isRsvpConfigured } from './rsvpEndpoint'
+import { MESSAGE_MAX_LENGTH, submitRsvp } from './submitRsvp'
 
 export type RsvpStatus = 'idle' | 'submitting' | 'success' | 'error' | 'unconfigured'
 
@@ -10,12 +12,17 @@ export type RsvpValues = {
   message: string
 }
 
-export function useRsvpForm(family: Family) {
+/**
+ * @param previous The family's last answer, when it is editing rather than
+ * replying for the first time. Seeding from it means a household correcting
+ * one number does not retype the rest.
+ */
+export function useRsvpForm(family: Family, previous?: RsvpAnswer | null) {
   const [values, setValues] = useState<RsvpValues>({
-    attending: '',
+    attending: previous ? (previous.confirmed ? 'yes' : 'no') : '',
     // Most families confirm every pass they were given, so start there.
-    guests: family.guests,
-    message: '',
+    guests: previous?.confirmed ? Math.min(previous.guests, family.guests) : family.guests,
+    message: previous?.message ?? '',
   })
   const [status, setStatus] = useState<RsvpStatus>('idle')
 
