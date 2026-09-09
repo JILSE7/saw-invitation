@@ -17,6 +17,20 @@ export type Family = {
   readonly guests: number
 }
 
+/**
+ * How the copy addresses this guest.
+ *
+ * Spanish has no dual number, so a couple and a party of eight take exactly
+ * the same forms — "ustedes", "estén", "olviden". The only split is one
+ * person against two or more, which is why this is a pair and not a count.
+ */
+export type Voice = 'one' | 'many'
+
+/** Plural is the safe default: an unknown guest is addressed as "ustedes". */
+export function voiceFor(family: Family | undefined): Voice {
+  return family?.guests === 1 ? 'one' : 'many'
+}
+
 export type RsvpAnswer = {
   readonly confirmed: boolean
   readonly guests: number

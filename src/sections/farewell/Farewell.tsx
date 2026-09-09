@@ -1,5 +1,5 @@
 import { farewell, rsvp } from '../../content/invitation'
-import type { Family } from '../../shared/api/invitation'
+import { voiceFor, type Family } from '../../shared/api/invitation'
 import { CornerVine } from '../../shared/ui/Botanical'
 import { Reveal } from '../../shared/ui/Reveal'
 import styles from './Farewell.module.css'
@@ -22,17 +22,19 @@ type FarewellProps = {
  * mark and once beneath it.
  */
 export function Farewell({ family }: FarewellProps) {
+  const voice = voiceFor(family)
+
   return (
     <section className={styles.section}>
       <Reveal className={styles.card}>
         <CornerVine at="bottomStart" />
         <CornerVine at="bottomEnd" />
 
-        <p className={styles.eyebrow}>{farewell.eyebrow}</p>
+        <p className={styles.eyebrow}>{farewell.eyebrow[voice]}</p>
         <p className={styles.greeting}>{farewell.greeting(family?.name)}</p>
-        <p className={styles.body}>{farewell.body}</p>
+        <p className={styles.body}>{farewell.body[voice]}</p>
 
-        <p className={styles.confirm}>{farewell.confirm(rsvp.deadlineLabel)}</p>
+        <p className={styles.confirm}>{farewell.confirm[voice](rsvp.deadlineLabel)}</p>
 
         <p className={styles.signoff}>{farewell.signoff}</p>
         <img

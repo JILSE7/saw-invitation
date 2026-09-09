@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import type { Family, RsvpAnswer } from '../../shared/api/invitation'
+import { voiceFor, type Family, type RsvpAnswer } from '../../shared/api/invitation'
 import { rsvp } from '../../content/invitation'
 import { Reveal } from '../../shared/ui/Reveal'
 import { SectionTitle } from '../../shared/ui/SectionTitle'
@@ -40,17 +40,18 @@ export function Rsvp({ family, answer }: RsvpProps) {
  */
 function RsvpGate({ family, answer }: { family: Family; answer: RsvpAnswer | null }) {
   const [editing, setEditing] = useState(false)
+  const voice = voiceFor(family)
 
   if (answer && !editing) {
     return (
       <section className={styles.section}>
         <Reveal className={styles.card}>
           <SectionTitle>{family.name}</SectionTitle>
-          <p className={styles.feedback}>{rsvp.answered.body}</p>
+          <p className={styles.feedback}>{rsvp.answered.body[voice]}</p>
           <p className={styles.answer}>
             {answer.confirmed
               ? rsvp.answered.attending(answer.guests)
-              : rsvp.answered.declined}
+              : rsvp.answered.declined[voice]}
           </p>
           {/* Plans change, and Responses is append-only precisely so they
               can: an edit adds a row rather than erasing the first answer. */}
@@ -68,15 +69,16 @@ function RsvpGate({ family, answer }: { family: Family; answer: RsvpAnswer | nul
 function RsvpForm({ family, previous }: { family: Family; previous: RsvpAnswer | null }) {
   const { values, status, isSubmitting, setAttending, setGuests, setMessage, handleSubmit } =
     useRsvpForm(family, previous)
+  const voice = voiceFor(family)
 
   if (status === 'success') {
     return (
       <section className={styles.section}>
         <div className={styles.card}>
           <SectionTitle>{rsvp.success.title(family.name)}</SectionTitle>
-          <p className={styles.feedback}>{rsvp.success.body}</p>
+          <p className={styles.feedback}>{rsvp.success.body[voice]}</p>
           <p className={styles.feedback}>
-            {values.attending === 'yes' ? rsvp.success.attending : rsvp.success.declined}
+            {values.attending === 'yes' ? rsvp.success.attending[voice] : rsvp.success.declined[voice]}
           </p>
         </div>
       </section>
@@ -84,13 +86,13 @@ function RsvpForm({ family, previous }: { family: Family; previous: RsvpAnswer |
   }
 
   const error =
-    status === 'error' ? rsvp.errors.submit : status === 'unconfigured' ? rsvp.errors.unconfigured : ''
+    status === 'error' ? rsvp.errors.submit[voice] : status === 'unconfigured' ? rsvp.errors.unconfigured : ''
 
   return (
     <section className={styles.section}>
       <Reveal className={styles.card}>
         <SectionTitle>{family.name}</SectionTitle>
-        <p className={styles.intro}>{rsvp.intro}</p>
+        <p className={styles.intro}>{rsvp.intro[voice]}</p>
         <p className={styles.passes}>{rsvp.passes(family.guests)}</p>
 
         <form className={styles.form} onSubmit={handleSubmit}>
@@ -98,7 +100,7 @@ function RsvpForm({ family, previous }: { family: Family; previous: RsvpAnswer |
               frozen while a submission is in flight. */}
           <fieldset className={styles.fields} disabled={isSubmitting}>
             <fieldset className={styles.field}>
-              <legend className={styles.label}>{rsvp.fields.attending}</legend>
+              <legend className={styles.label}>{rsvp.fields.attending[voice]}</legend>
               <span className={styles.choices}>
                 {(['yes', 'no'] as const).map((option) => (
                   <label key={option} className={styles.choice}>
@@ -110,13 +112,13 @@ function RsvpForm({ family, previous }: { family: Family; previous: RsvpAnswer |
                       checked={values.attending === option}
                       onChange={() => setAttending(option)}
                     />
-                    {rsvp.options[option]}
+                    {rsvp.options[option][voice]}
                   </label>
                 ))}
               </span>
             </fieldset>
 
-            {values.attending === 'yes' && (
+            {values.attending === 'yes' && family.guests > 1 && (
               <p className={styles.field}>
                 <span className={styles.label} id="rsvp-guests-label">
                   {rsvp.fields.guestCount}

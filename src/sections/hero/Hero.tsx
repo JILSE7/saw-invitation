@@ -1,4 +1,4 @@
-import type { Family } from '../../shared/api/invitation'
+import { voiceFor, type Family } from '../../shared/api/invitation'
 import { couple, envelope, intro, weddingDate } from '../../content/invitation'
 import { CornerVine } from '../../shared/ui/Botanical'
 import { useGsapContext } from '../../shared/hooks/useGsapContext'
@@ -13,6 +13,7 @@ type HeroProps = {
 
 export function Hero({ family }: HeroProps) {
   const reduced = usePrefersReducedMotion()
+  const voice = voiceFor(family)
 
   const scope = useGsapContext<HTMLElement>(
     (self) => {
@@ -61,7 +62,7 @@ export function Hero({ family }: HeroProps) {
             {couple.second}
           </h1>
 
-          <p className={styles.body}>{intro.body}</p>
+          <p className={styles.body}>{intro.body[voice]}</p>
 
           <p className={styles.dateBar}>
             <span>{weddingDate.weekday}</span>

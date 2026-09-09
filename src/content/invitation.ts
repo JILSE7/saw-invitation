@@ -23,10 +23,19 @@ export const weddingDate = {
   time: '5:00 P.M.',
 } as const
 
+/**
+ * Copy that changes with how many people the invitation is for, keyed by the
+ * Voice the guest's pass count resolves to.
+ */
+export type Voiced = { readonly one: string; readonly many: string }
+
 export const intro = {
   eyebrow: '¡Nos casamos!',
   // TODO(transcribe): full paragraph from the hero card.
-  body: 'Con mucha alegría y amor en el corazón, queremos compartir con ustedes uno de los días más importantes de nuestra vida.',
+  body: {
+    one: 'Con mucha alegría y amor en el corazón, queremos compartir contigo uno de los días más importantes de nuestra vida.',
+    many: 'Con mucha alegría y amor en el corazón, queremos compartir con ustedes uno de los días más importantes de nuestra vida.',
+  } satisfies Voiced,
 } as const
 
 export type Venue = {
@@ -85,37 +94,61 @@ export const rsvp = {
   title: '¡Confirmación de asistencia!',
   deadlineLabel: '06 de octubre de 2026',
   deadlineIso: '2026-10-06',
-  intro: 'Nos encantaría compartir este momento con ustedes.',
+  intro: {
+    one: 'Nos encantaría compartir este momento contigo.',
+    many: 'Nos encantaría compartir este momento con ustedes.',
+  } satisfies Voiced,
   passes: (guests: number) =>
     guests === 1
-      ? 'Tenemos reservado 1 lugar para ustedes.'
+      ? 'Tenemos reservado 1 lugar para ti.'
       : `Tenemos reservados ${guests} lugares para ustedes.`,
   fields: {
-    attending: '¿Confirmas tu asistencia a nuestra boda?',
+    attending: {
+      one: '¿Confirmas tu asistencia a nuestra boda?',
+      many: '¿Confirman su asistencia a nuestra boda?',
+    } satisfies Voiced,
     guestCount: '¿Cuántas personas asistirán?',
     message: '¿Quieres dejarnos un mensaje?',
   },
   options: {
-    yes: 'Sí, asistiremos',
-    no: 'No podremos asistir',
+    yes: { one: 'Sí, asistiré', many: 'Sí, asistiremos' } satisfies Voiced,
+    no: { one: 'No podré asistir', many: 'No podremos asistir' } satisfies Voiced,
   },
   answered: {
-    body: 'Ya recibimos tu respuesta.',
+    body: {
+      one: 'Ya recibimos tu respuesta.',
+      many: 'Ya recibimos su respuesta.',
+    } satisfies Voiced,
     attending: (guests: number) =>
-      guests === 1 ? 'Confirmaste 1 lugar.' : `Confirmaste ${guests} lugares.`,
-    declined: 'Nos avisaste que no podrán acompañarnos.',
+      guests === 1 ? 'Confirmaste 1 lugar.' : `Confirmaron ${guests} lugares.`,
+    declined: {
+      one: 'Nos avisaste que no podrás acompañarnos.',
+      many: 'Nos avisaron que no podrán acompañarnos.',
+    } satisfies Voiced,
     change: 'Modificar mi respuesta',
   },
   submitLabel: 'Confirmar asistencia',
   submittingLabel: 'Enviando…',
   success: {
     title: (familyName: string) => `¡Gracias, ${familyName}! ❤️`,
-    body: 'Hemos recibido su confirmación.',
-    attending: 'Los esperamos con mucho cariño.',
-    declined: 'Lamentamos no poder contar con ustedes, pero gracias por avisarnos.',
+    body: {
+      one: 'Hemos recibido tu confirmación.',
+      many: 'Hemos recibido su confirmación.',
+    } satisfies Voiced,
+    attending: {
+      one: 'Te esperamos con mucho cariño.',
+      many: 'Los esperamos con mucho cariño.',
+    } satisfies Voiced,
+    declined: {
+      one: 'Lamentamos no poder contar contigo, pero gracias por avisarnos.',
+      many: 'Lamentamos no poder contar con ustedes, pero gracias por avisarnos.',
+    } satisfies Voiced,
   },
   errors: {
-    submit: 'No pudimos registrar tu confirmación. Por favor, inténtalo nuevamente.',
+    submit: {
+      one: 'No pudimos registrar tu confirmación. Por favor, inténtalo nuevamente.',
+      many: 'No pudimos registrar su confirmación. Por favor, inténtenlo nuevamente.',
+    } satisfies Voiced,
     unconfigured: 'El formulario todavía no está conectado a un destino.',
     missingChoice: 'Elige una opción para continuar.',
   },
@@ -130,11 +163,17 @@ export const rsvp = {
  * ends on a goodbye rather than on an errand.
  */
 export const farewell = {
-  eyebrow: 'Los esperamos',
+  eyebrow: { one: 'Te esperamos', many: 'Los esperamos' } satisfies Voiced,
   /** Falls back to the plural when the link carried no family. */
   greeting: (name: string | undefined) => (name ? `${name},` : 'A ustedes,'),
-  body: 'Estamos listos para celebrar el amor, y queremos que estén ahí. Su compañía es el regalo que más ilusión nos hace.',
-  confirm: (deadline: string) => `No olviden confirmar su asistencia antes del ${deadline}.`,
+  body: {
+    one: 'Estamos listos para celebrar el amor, y queremos que estés ahí. Tu compañía es el regalo que más ilusión nos hace.',
+    many: 'Estamos listos para celebrar el amor, y queremos que estén ahí. Su compañía es el regalo que más ilusión nos hace.',
+  } satisfies Voiced,
+  confirm: {
+    one: (deadline: string) => `No olvides confirmar tu asistencia antes del ${deadline}.`,
+    many: (deadline: string) => `No olviden confirmar su asistencia antes del ${deadline}.`,
+  },
   signoff: 'Con todo nuestro cariño,',
   /** The mark carries the couple and the date, so it is content, not decor. */
   markAlt: 'Alina & Said · 06.11.2026',
