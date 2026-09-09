@@ -1,7 +1,8 @@
-import { adultsOnly, closing, gifts, notFound, passes, unreachable } from './content/invitation'
+import { adultsOnly, gifts, notFound, passes, unreachable } from './content/invitation'
 import { photos } from './content/photos'
 import { Countdown } from './sections/countdown/Countdown'
 import { DressCode } from './sections/dress-code/DressCode'
+import { Farewell } from './sections/farewell/Farewell'
 import { Hero } from './sections/hero/Hero'
 import { Itinerary } from './sections/itinerary/Itinerary'
 import { MusicPlayer } from './sections/music/MusicPlayer'
@@ -62,7 +63,7 @@ export default function App() {
       <Statement body={passes.body} variant="tinted" />
       <Rsvp family={family} answer={answer} />
       <Photo photo={photos.dock} ornament />
-      <Statement body={closing.body} variant="tinted" />
+      <Farewell family={family} />
       <MusicPlayer />
     </main>
   )

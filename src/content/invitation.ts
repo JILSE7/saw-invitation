@@ -124,9 +124,20 @@ export const rsvp = {
     'Esta confirmación es personal. Abre el enlace que te enviamos para confirmar tu asistencia.',
 } as const
 
-export const closing = {
-  // TODO(transcribe)
-  body: 'Estamos listos para celebrar el amor, y queremos que estés ahí. Favor de confirmar tu asistencia antes del 06 de octubre de 2026.',
+/**
+ * The last words of the document. It closes the invitation the way the hero
+ * opens it — a paper card inside the same botanical corners — so the scroll
+ * ends on a goodbye rather than on an errand.
+ */
+export const farewell = {
+  eyebrow: 'Los esperamos',
+  /** Falls back to the plural when the link carried no family. */
+  greeting: (name: string | undefined) => (name ? `${name},` : 'A ustedes,'),
+  body: 'Estamos listos para celebrar el amor, y queremos que estén ahí. Su compañía es el regalo que más ilusión nos hace.',
+  confirm: (deadline: string) => `No olviden confirmar su asistencia antes del ${deadline}.`,
+  signoff: 'Con todo nuestro cariño,',
+  /** The mark carries the couple and the date, so it is content, not decor. */
+  markAlt: 'Alina & Said · 06.11.2026',
 } as const
 
 export const envelope = {
