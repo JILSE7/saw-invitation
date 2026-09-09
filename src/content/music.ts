@@ -1,7 +1,7 @@
 export type Track = {
   readonly title: string
   readonly artist: string
-  /** Path served from /public, e.g. '/music/nuestra-cancion.mp3'. */
+  /** Path served from /public, e.g. '/music/eres-tu.mp3'. */
   readonly src: string
 }
 
@@ -11,5 +11,5 @@ export type Track = {
  * behind it is worse than no control.
  */
 export const tracks: readonly Track[] = [
-  // TODO(provide): { title: 'Nuestra canción', artist: '—', src: '/music/nuestra-cancion.mp3' },
+  { title: 'Eres Tú', artist: 'Carla Morrison', src: '/music/eres-tu.mp3' },
 ]
