@@ -6,7 +6,7 @@
    * taller and rises out of it. An envelope drawn tall enough to contain the
    * whole card stops reading as an envelope and starts reading as a house.
    */
-  --body-h: clamp(150px, 36vw, 210px);
+  --body-h: clamp(186px, 44vw, 258px);
   --tuck: 0.62; /* fraction of the body that overlaps the card */
   --flap-h: clamp(84px, 23vw, 132px);
   --wall: clamp(26px, 8vw, 46px);
@@ -121,7 +121,7 @@
      household name wraps to a second line on a narrow screen — the .addressee
      box is tall enough for two, so wrapping costs nothing and undersized
      script costs the whole effect. */
-  font-size: clamp(1.85rem, 1.35rem + 2.3vw, 2.75rem);
+  font-size: clamp(2.15rem, 1.5rem + 2.9vw, 3.2rem);
   line-height: 1.25;
   color: var(--c-paper);
   text-wrap: balance;
