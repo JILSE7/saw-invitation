@@ -15,12 +15,12 @@ export const couple = {
 
 export const weddingDate = {
   /** Authoritative timestamp. Drives the countdown. */
-  iso: '2026-11-06T13:00:00-06:00',
+  iso: '2026-11-06T17:00:00-06:00',
   weekday: 'Viernes',
   month: 'Noviembre',
   day: '06',
   year: '2026',
-  time: '1:00 P.M.',
+  time: '5:00 P.M.',
 } as const
 
 export const intro = {
@@ -43,7 +43,7 @@ export const venues: readonly Venue[] = [
   {
     kind: 'ceremony',
     title: 'Ceremonia Religiosa',
-    time: '1:30 pm',
+    time: '5:00 pm',
     place: 'Parroquia de La Sagrada Familia',
     address: 'Nápoles S/N, Hab Izcalli Piramide, 54140 Tlalnepantla, Méx.',
     mapUrl: 'https://maps.app.goo.gl/XEbfZ3okbG1QkUC97',
@@ -51,7 +51,7 @@ export const venues: readonly Venue[] = [
   {
     kind: 'reception',
     title: 'Recepción',
-    time: '3:30 pm',
+    time: '6:30 pm',
     place: 'San José De Gracia',
     address: 'Tepic 51, Hab Valle Ceylan, 54150 Tlalnepantla, Méx.',
     mapUrl: 'https://maps.app.goo.gl/xnNyTfhvzcbpWrLf6'

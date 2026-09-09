@@ -24,7 +24,8 @@ export type ItineraryItem = {
 
 export const itineraryTitle = 'Itinerario'
 
-// TODO(transcribe): confirm every label and time against the source PNG.
+// Times confirmed by the couple. The labels are still the ones read off the
+// low-resolution preview: check those against the full-size source PNG.
 export const itinerary: readonly ItineraryItem[] = [
   { label: 'Ceremonia', time: '5:00 PM', icon: 'rings' },
   { label: 'Recepción', time: '6:30 PM', icon: 'arch' },
