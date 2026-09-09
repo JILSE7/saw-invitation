@@ -26,10 +26,10 @@ export const itineraryTitle = 'Itinerario'
 
 // TODO(transcribe): confirm every label and time against the source PNG.
 export const itinerary: readonly ItineraryItem[] = [
-  { label: 'Ceremonia', time: '1:00 PM', icon: 'rings' },
-  { label: 'Recepción', time: '3:30 PM', icon: 'arch' },
-  { label: 'Brindis', time: '', icon: 'toast' },
-  { label: 'Vals', time: '', icon: 'waltz' },
-  { label: 'Cena', time: '5:00 PM', icon: 'dinner' },
-  { label: 'Baile', time: '9:00 PM', icon: 'dance' },
+  { label: 'Ceremonia', time: '5:00 PM', icon: 'rings' },
+  { label: 'Recepción', time: '6:30 PM', icon: 'arch' },
+  { label: 'Brindis', time: '7:30 PM', icon: 'toast' },
+  { label: 'Vals', time: '8:00 PM', icon: 'waltz' },
+  { label: 'Cena', time: '9:00 PM', icon: 'dinner' },
+  { label: 'Baile', time: '11:00 PM', icon: 'dance' },
 ]
