@@ -8,7 +8,7 @@ import { Itinerary } from './sections/itinerary/Itinerary'
 import { MusicPlayer } from './sections/music/MusicPlayer'
 import { InvitationLoader } from './sections/loader/InvitationLoader'
 import { InvitationNotice } from './sections/notice/InvitationNotice'
-import { Photo } from './sections/photo/Photo'
+import { Photo, PhotoPair } from './sections/photo/Photo'
 import { Rsvp } from './sections/rsvp/Rsvp'
 import { Statement } from './sections/statement/Statement'
 import { Venues } from './sections/venues/Venues'
@@ -58,6 +58,10 @@ export default function App() {
       <Statement title={gifts.title} body={gifts.body} closing={gifts.closing} variant="framed" />
       <Photo photo={photos.bench} />
       <DressCode />
+      {/* The same moment from either side. Alina faces right and Said faces
+          left, so in this order their gazes meet over the gutter. Swapping
+          them turns the pair back-to-back. */}
+      <PhotoPair left={photos.alina} right={photos.said} ornament />
       <Statement body={adultsOnly.body} />
       <Photo photo={photos.walking} />
       <Statement body={passes.body} variant="tinted" />

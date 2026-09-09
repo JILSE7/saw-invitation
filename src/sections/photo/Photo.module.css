@@ -47,3 +47,20 @@
   object-fit: cover;
 }
 
+
+/**
+ * The diptych: two frames hinged by one gutter.
+ *
+ * The mat loses its side padding here and the figure its inline padding, so
+ * the two squares keep as much width as the column allows. On a 430px phone
+ * that is the difference between a face you can read and one you cannot.
+ */
+.pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-2);
+}
+
+.pairMat {
+  padding-inline: var(--sp-2);
+}

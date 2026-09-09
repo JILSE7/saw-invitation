@@ -8,9 +8,14 @@ export type Photo = {
 }
 
 /**
- * Five photographs for the five breaks the source design puts between
- * sections. Each one is cropped to a different ratio: five 2:3 portraits down
- * one page reads as a contact sheet, not as a design.
+ * The photographs that break up the sections. Each is cropped to a different
+ * ratio: portraits all at the same 2:3 down one page read as a contact sheet,
+ * not as a design.
+ *
+ * `alina` and `said` are the one deliberate exception. They are the same
+ * moment photographed from either side, so they share a square crop and sit
+ * together — the pairing is the point, and giving them different ratios would
+ * hide it.
  */
 export const photos = {
   ring: {
@@ -42,5 +47,17 @@ export const photos = {
     alt: 'Said y Alina de espaldas, sentados en un muelle de madera mirando el agua.',
     width: 500,
     height: 625,
+  },
+  alina: {
+    id: 'alina',
+    alt: 'Alina sonríe mirando a Said, de pie junto al lago del parque.',
+    width: 500,
+    height: 500,
+  },
+  said: {
+    id: 'said',
+    alt: 'Said sonríe mirando a Alina, de pie junto al lago del parque.',
+    width: 500,
+    height: 500,
   },
 } as const satisfies Record<string, Photo>

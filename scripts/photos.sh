@@ -24,6 +24,8 @@ water	saw-3	3:2	center
 bench	saw-5	16:9	center
 walking	saw-4	4:5	center
 dock	saw-2	4:5	center
+alina	saw-6	1:1	north
+said	saw-7	1:1	north
 EOF
 )
 
