@@ -83,6 +83,35 @@ const GLYPHS = {
       <path d="M20 15 C24.5 12.6 28.8 11.8 33 12" />
     </>
   ),
+  /**
+   * Ramo — three blossoms over a bound stem.
+   *
+   * The flower centres and the wrap carry the whole read. Three plain circles
+   * on converging lines are balloons on strings, and a bunch of balloons is
+   * the one thing that never has a band tied around its handle.
+   *
+   * Leaves were drawn at the stems first and had to go: at 66px they thinned
+   * into two dashes that read as wings, and they pushed the glyph darker than
+   * anything else in the family. The blossoms carry the foliage instead by
+   * being wide enough to fill the frame the way its neighbours do.
+   */
+  bouquet: (
+    <>
+      <circle cx="24" cy="12.6" r="6.2" />
+      <circle cx="24" cy="12.6" r="1.9" />
+      <circle cx="13" cy="20.6" r="5.6" />
+      <circle cx="13" cy="20.6" r="1.7" />
+      <circle cx="35" cy="20.6" r="5.6" />
+      <circle cx="35" cy="20.6" r="1.7" />
+      <path d="M24 18.8 V29.6" />
+      <path d="M16.2 25.2 Q19.8 27.6 21.6 29.6" />
+      <path d="M31.8 25.2 Q28.2 27.6 26.4 29.6" />
+      <path d="M19 29.6 H29 V34.2 H19 Z" />
+      <path d="M20.8 34.2 L18.6 41.4" />
+      <path d="M24 34.2 V42" />
+      <path d="M27.2 34.2 L29.4 41.4" />
+    </>
+  ),
   /** Código de vestimenta — an A-line gown. */
   dress: (
     <>

@@ -16,7 +16,7 @@ export type ItineraryItem = {
   readonly time: string
   /**
    * One of the glyphs registered in src/shared/ui/Icon.tsx:
-   * rings · arch · toast · waltz · dinner · dance · dress · tuxedo
+   * rings · arch · toast · waltz · dinner · dance · bouquet · dress · tuxedo
    * Adding a new one means adding its path there first.
    */
   readonly icon: IconName
@@ -29,8 +29,8 @@ export const itineraryTitle = 'Itinerario'
 export const itinerary: readonly ItineraryItem[] = [
   { label: 'Ceremonia', time: '5:00 PM', icon: 'rings' },
   { label: 'Recepción', time: '6:30 PM', icon: 'arch' },
-  { label: 'Brindis', time: '7:30 PM', icon: 'toast' },
-  { label: 'Vals', time: '8:00 PM', icon: 'waltz' },
-  { label: 'Cena', time: '9:00 PM', icon: 'dinner' },
-  { label: 'Baile', time: '11:00 PM', icon: 'dance' },
+  { label: 'Brindis', time: '7:00 PM', icon: 'toast' },
+  { label: 'Cena', time: '7:30 PM', icon: 'dinner' },
+  { label: 'Vals', time: '9:00 PM', icon: 'waltz' },
+  { label: 'Ramo', time: '10:00 PM', icon: 'bouquet' },
 ]
