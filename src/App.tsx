@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { adultsOnly, gifts, notFound, passes, unreachable } from './content/invitation'
 import { photos } from './content/photos'
 import { Countdown } from './sections/countdown/Countdown'
@@ -6,6 +7,8 @@ import { Farewell } from './sections/farewell/Farewell'
 import { Hero } from './sections/hero/Hero'
 import { Itinerary } from './sections/itinerary/Itinerary'
 import { MusicPlayer } from './sections/music/MusicPlayer'
+import { useAudioPlayer } from './sections/music/useAudioPlayer'
+import { InvitationGate } from './sections/loader/InvitationGate'
 import { InvitationLoader } from './sections/loader/InvitationLoader'
 import { InvitationNotice } from './sections/notice/InvitationNotice'
 import { Photo, PhotoPair } from './sections/photo/Photo'
@@ -21,6 +24,8 @@ import { useHoldWhile } from './shared/hooks/useHoldWhile'
  * placed yet: they land once the source export is sliced.
  */
 export default function App() {
+  const player = useAudioPlayer()
+  const [invitationOpen, setInvitationOpen] = useState(false)
   const { state, family, answer, retry } = useFamily()
   const loading = useHoldWhile(state === 'loading', 700)
 
@@ -48,27 +53,38 @@ export default function App() {
   }
 
   return (
-    <main>
-      <Hero family={family} />
-      <Photo photo={photos.ring} priority ornament />
-      <Countdown />
-      <Venues />
-      <Photo photo={photos.water} />
-      <Itinerary />
-      <Statement title={gifts.title} body={gifts.body} closing={gifts.closing} variant="framed" />
-      <Photo photo={photos.bench} />
-      <DressCode />
-      {/* The same moment from either side. Alina faces right and Said faces
-          left, so in this order their gazes meet over the gutter. Swapping
-          them turns the pair back-to-back. */}
-      <PhotoPair left={photos.alina} right={photos.said} ornament />
-      <Statement body={adultsOnly.body} />
-      <Photo photo={photos.walking} />
-      <Statement body={passes.body} variant="tinted" />
-      <Rsvp family={family} answer={answer} />
-      <Photo photo={photos.dock} ornament />
-      <Farewell family={family} />
-      <MusicPlayer />
-    </main>
+    <>
+      {invitationOpen ? (
+        <main>
+          <Hero family={family} />
+          <Photo photo={photos.ring} priority ornament />
+          <Countdown />
+          <Venues />
+          <Photo photo={photos.water} />
+          <Itinerary />
+          <Statement title={gifts.title} body={gifts.body} closing={gifts.closing} variant="framed" />
+          <Photo photo={photos.bench} />
+          <DressCode />
+          {/* The same moment from either side. Alina faces right and Said faces
+              left, so in this order their gazes meet over the gutter. Swapping
+              them turns the pair back-to-back. */}
+          <PhotoPair left={photos.alina} right={photos.said} ornament />
+          <Statement body={adultsOnly.body} />
+          <Photo photo={photos.walking} />
+          <Statement body={passes.body} variant="tinted" />
+          <Rsvp family={family} answer={answer} />
+          <Photo photo={photos.dock} ornament />
+          <Farewell family={family} />
+        </main>
+      ) : (
+        <InvitationGate
+          onOpen={() => {
+            void player.play()
+            setInvitationOpen(true)
+          }}
+        />
+      )}
+      <MusicPlayer player={player} controlsVisible={invitationOpen} />
+    </>
   )
 }

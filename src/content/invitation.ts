@@ -92,8 +92,8 @@ export const passes = {
 
 export const rsvp = {
   title: '¡Confirmación de asistencia!',
-  deadlineLabel: '06 de octubre de 2026',
-  deadlineIso: '2026-10-06',
+  deadlineLabel: '29 de octubre de 2026',
+  deadlineIso: '2026-10-29',
   intro: {
     one: 'Nos encantaría compartir este momento contigo.',
     many: 'Nos encantaría compartir este momento con ustedes.',
@@ -185,7 +185,7 @@ export const envelope = {
 } as const
 
 export const loader = {
-  label: 'Abriendo tu invitación',
+  label: 'Cargando tu invitación',
 } as const
 
 export const notFound = {

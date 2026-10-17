@@ -62,5 +62,5 @@ export function useAudioPlayer() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [index])
 
-  return { audioRef, current, index, status, isPlaying, toggle, next }
+  return { audioRef, current, index, status, isPlaying, play, toggle, next }
 }

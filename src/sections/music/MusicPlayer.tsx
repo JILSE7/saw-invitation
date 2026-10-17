@@ -1,14 +1,19 @@
 import { tracks } from '../../content/music'
 import styles from './MusicPlayer.module.css'
-import { useAudioPlayer } from './useAudioPlayer'
+import type { useAudioPlayer } from './useAudioPlayer'
+
+type MusicPlayerProps = {
+  player: ReturnType<typeof useAudioPlayer>
+  controlsVisible?: boolean
+}
 
 const NOTICE: Partial<Record<ReturnType<typeof useAudioPlayer>['status'], string>> = {
   blocked: 'Tocá de nuevo para reproducir',
   error: 'No se pudo cargar la canción',
 }
 
-export function MusicPlayer() {
-  const { audioRef, current, status, isPlaying, toggle, next } = useAudioPlayer()
+export function MusicPlayer({ player, controlsVisible = true }: MusicPlayerProps) {
+  const { audioRef, current, status, isPlaying, toggle, next } = player
 
   // No tracks configured means no control at all.
   if (!current) return null
@@ -16,8 +21,12 @@ export function MusicPlayer() {
   const notice = NOTICE[status]
 
   return (
-    <div className={styles.player}>
-      <audio ref={audioRef} src={current.src} preload="none" />
+    <div
+      className={styles.player}
+      aria-hidden={!controlsVisible}
+      style={{ visibility: controlsVisible ? 'visible' : 'hidden', pointerEvents: controlsVisible ? 'auto' : 'none' }}
+    >
+      <audio ref={audioRef} src={current.src} preload="auto" />
 
       <button
         type="button"
